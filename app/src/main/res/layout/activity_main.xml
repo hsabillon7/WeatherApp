@@ -7,6 +7,4 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    L4b0r4t0r10JS
-
 </android.support.constraint.ConstraintLayout>
