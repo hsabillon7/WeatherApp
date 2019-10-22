@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">My Weather App</string>
+
+    <!-- activity_main -->
+    <string name="text_view_grados">%1$d°C</string>
+    <string name="text_view_ciudad">%1$s, %2$s</string>
+    <string name="text_view_descripcion">5:33 PM | Jueves, 14 de Octubre 2019</string>
+    <string name="text_estado">Soleado</string>
+    <string name="text_view_minima">Min %1$d°C</string>
+    <string name="text_view_maxima">Max %1$d°C</string>
+    <string name="text_view_sensacion">Sensación %1$d°C</string>
+    <string name="text_view_humedad">Humedad</string>
+    <string name="text_view_humedad_valor">%1$d</string>
+    <string name="text_view_presion">Presión</string>
+    <string name="text_view_presion_valor">%1$d hpa</string>
+    <string name="text_view_viento">Viento</string>
+    <string name="text_view_viento_resultado">%1$d km/h</string>
+</resources>
