@@ -17,10 +17,9 @@ class MainActivity : AppCompatActivity() {
 
         // Verificar la conectividad a Internet
         if (Network.verifyConnection(this)) {
-            Toast.makeText(this, "Conexión establecida", Toast.LENGTH_LONG).show()
-            httpVolley()
+            httpVolley(getUrlApi("siguatepeque"))
         } else {
-            Toast.makeText(this, "No tienes conexión a Internet", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "¡No tienes conexión a Internet!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -28,21 +27,27 @@ class MainActivity : AppCompatActivity() {
      * https://developer.android.com/training/volley/simple
      * Realiza una petición http implementando Volley
      */
-    private fun httpVolley() {
+    private fun httpVolley(url: String) {
         // Instanciar la cola de peticiones
         val queue = Volley.newRequestQueue(this)
-        val url = "http://www.google.com"
 
-        // Obtener un string de respuesta desde la url enviada
+        // Obtener un string de respuesta desde la URL enviada
         val stringRequest = StringRequest(Request.Method.GET, url,
-            Response.Listener<String> {
-                response -> Log.d("HTTPVolley", response)
+            Response.Listener<String> { response ->
+                Log.d("HTTPVolley",  response)
+                Toast.makeText(this, "Conexión establecida", Toast.LENGTH_LONG).show()
             },
             Response.ErrorListener {
-                Log.d("HTTPVolley", "¡Ha ocurrido un error en la conexión!")
-            }
-        )
+                Log.d("HTTPVolley", "Error en la URL $url")
+                Toast.makeText(this, "¡Ha ocurrido un error en la conexión!", Toast.LENGTH_SHORT).show()
+            })
 
+        // Agregar la peticion a la cola de peticiones
         queue.add(stringRequest)
+    }
+
+    private fun getUrlApi(city: String): String {
+
+        return "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=10bc1fcd8615b888c89f52126f7e90c7&units=metric&lang=es"
     }
 }
