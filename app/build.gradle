@@ -34,4 +34,5 @@ dependencies {
 //    Dependencias agregadas
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

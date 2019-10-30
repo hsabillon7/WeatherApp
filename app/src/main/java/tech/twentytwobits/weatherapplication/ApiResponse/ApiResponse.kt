@@ -12,6 +12,7 @@ class ApiResponse(name: String, cod: Int, weather: ArrayList<Weather>, main: Mai
         this.name = name
         this.cod = cod
         this.weather = weather
+        this.main = main
         this.sys = sys
         this.wind = wind
     }
