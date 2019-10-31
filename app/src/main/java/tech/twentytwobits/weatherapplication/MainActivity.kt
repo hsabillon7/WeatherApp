@@ -24,8 +24,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Verificar la conectividad a Internet
+        verifyAndConnect()
+
+        // Listener para obtener una nueva ciudad
+        buttonBuscar.setOnClickListener {
+            verifyAndConnect(editTextBuscar.text.toString())
+        }
+    }
+
+    /***
+     * Verifica la conexión del dispositivo a Internet y obtiene
+     * la respuesta JSON desde la API.
+     */
+    private fun verifyAndConnect(city: String = "siguatepeque") {
         if (Network.verifyConnection(this)) {
-            httpVolley(getUrlApi("siguatepeque"))
+            httpVolley(getUrlApi(city))
         } else {
             Toast.makeText(this, "¡No tienes conexión a Internet!", Toast.LENGTH_SHORT).show()
         }
@@ -76,6 +89,11 @@ class MainActivity : AppCompatActivity() {
             textViewGrados.text = getString(R.string.text_view_grados, apiResponse.main?.temp?.toInt())
             textViewEstado.text = apiResponse.weather?.get(0)?.description?.capitalize()
             textViewMinima.text = getString(R.string.text_view_minima, apiResponse.main?.temp_min?.toInt())
+            textViewMaxima.text = getString(R.string.text_view_maxima, apiResponse.main?.temp_max?.toInt())
+            // TODO: Buscar la manera de mostrar el simbolo de % sin concatenar
+            textViewHumedadValor.text = getString(R.string.text_view_humedad_valor, apiResponse.main?.humidity?.toInt()) + '%'
+            textViewVientoValor.text = getString(R.string.text_view_viento_valor, apiResponse.wind?.speed?.toInt())
+            textViewPresionValor.text = getString(R.string.text_view_presion_valor, apiResponse.main?.pressure?.toInt())
             Toast.makeText(this, "Datos obtenidos correctamente", Toast.LENGTH_SHORT).show()
         }
     }

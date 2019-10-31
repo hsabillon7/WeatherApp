@@ -17,4 +17,5 @@
     <string name="text_view_presion_valor">%1$d hpa</string>
     <string name="text_view_viento">Viento</string>
     <string name="text_view_viento_valor">%1$d km/h</string>
+    <string name="porcentaje">%</string>
 </resources>
