@@ -1,5 +1,6 @@
 package tech.twentytwobits.weatherapplication
 
+import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import tech.twentytwobits.weatherapplication.ApiResponse.ApiResponse
 import java.text.SimpleDateFormat
@@ -30,6 +32,18 @@ class MainActivity : AppCompatActivity() {
         buttonBuscar.setOnClickListener {
             verifyAndConnect(editTextBuscar.text.toString())
         }
+
+        // Listener para mostrar el estado del tiempo los días siguientes
+        textViewSiguientesDias.setOnClickListener {
+            startIntentNextDays()
+        }
+    }
+
+    /***
+     * Inicializa la activity forecast
+     */
+    private fun startIntentNextDays() {
+        goToActivity<ForecastActivity>{}
     }
 
     /***
@@ -40,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         if (Network.verifyConnection(this)) {
             httpVolley(getUrlApi(city))
         } else {
-            Toast.makeText(this, "¡No tienes conexión a Internet!", Toast.LENGTH_SHORT).show()
+            toast("¡No tienes conexión a Internet!")
         }
     }
 
@@ -56,12 +70,12 @@ class MainActivity : AppCompatActivity() {
         val stringRequest = StringRequest(Request.Method.GET, url,
             Response.Listener<String> { response ->
                 Log.d("HTTPVolley",  response)
-                Toast.makeText(this, "Conexión establecida", Toast.LENGTH_LONG).show()
+                toast("Conexión establecida")
                 jsonToObject(response)
             },
             Response.ErrorListener {
                 Log.d("HTTPVolley", "Error en la URL $url")
-                Toast.makeText(this, "¡Ha ocurrido un error en la conexión!", Toast.LENGTH_SHORT).show()
+                toast("¡Ha ocurrido un error en la conexión!")
             })
 
         // Agregar la peticion a la cola de peticiones
@@ -71,6 +85,10 @@ class MainActivity : AppCompatActivity() {
     private fun getUrlApi(city: String): String {
 
         return "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=10bc1fcd8615b888c89f52126f7e90c7&units=metric&lang=es"
+    }
+
+    private fun getImageURL(icon: String?): String {
+        return "https://openweathermap.org/img/w/$icon.png"
     }
 
     /***
@@ -94,7 +112,10 @@ class MainActivity : AppCompatActivity() {
             textViewHumedadValor.text = getString(R.string.text_view_humedad_valor, apiResponse.main?.humidity?.toInt()) + '%'
             textViewVientoValor.text = getString(R.string.text_view_viento_valor, apiResponse.wind?.speed?.toInt())
             textViewPresionValor.text = getString(R.string.text_view_presion_valor, apiResponse.main?.pressure?.toInt())
-            Toast.makeText(this, "Datos obtenidos correctamente", Toast.LENGTH_SHORT).show()
+            // https://developer.android.com/reference/android/widget/ImageView
+            // Obtener la imagen desde la URL con Picasso
+            Picasso.get().load(getImageURL(apiResponse.weather?.get(0)?.icon)).into(imageViewIcono)
+            toast("Datos obtenidos correctamente")
         }
     }
 
